@@ -1,5 +1,4 @@
 #!ipxe
 
 dhcp
-# TODO add menu
-chain http://mjolnir.mono/mjolnir.ipxe
+chain http://mjolnir.mono/boot/mjolnir.ipxe
