@@ -1,5 +1,53 @@
 #!ipxe
 
+set boot_host http://mjolnir.mono/boot
+
 :retry_dhcp
 dhcp || goto retry_dhcp
-chain http://mjolnir.mono/boot/mjolnir.ipxe
+
+# show my pretty Iceland photo
+# console --picture ${boot_host}/iceland.png
+#
+console -x 1024 -y 768 --picture ${boot_host}/iceland.png --depth 32
+
+cpair --foreground 0 --background 4 1
+cpair --foreground 0 --background 4 0
+cpair --foreground 2 --background 4 3
+
+:start
+menu Monofuel Network Boot
+item --gap -- Live
+item --key d debian Debian Stretch
+item --gap -- Installer
+# TODO
+item --gap -- Tool
+# TODO
+item --gap -- Other
+item shell Shell
+item reboot Reboot
+item --key x exit         Exit iPXE and continue BIOS boot
+
+choose selected
+goto ${selected}
+
+:shell
+echo Type 'exit' to get the back to the menu
+shell
+set menu-timeout 0
+set submenu-timeout 0
+goto start
+
+:failed
+echo Booting failed, dropping to shell
+goto shell
+
+:reboot
+reboot
+
+:exit
+exit
+
+:debian
+echo loading debian
+kernel ${boot_host}/web/debian/vmlinuz
+module ${boot_host}/web/debian/initrd.img
