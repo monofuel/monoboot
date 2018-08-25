@@ -1,4 +1,5 @@
 #!ipxe
 
-dhcp
+:retry_dhcp
+dhcp || goto retry_dhcp
 chain http://mjolnir.mono/boot/mjolnir.ipxe
