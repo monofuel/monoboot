@@ -1,4 +1,4 @@
 #!ipxe
 
 dhcp
-chain http://mjolnir.mono/mjolnir.ipxe
+chain http://mjolnir.mono/boot/mjolnir.ipxe
