@@ -1,0 +1,12 @@
+---
+- name: install nfs tools
+  apt: name={{item}} state=present
+  with_items:
+    - nfs-common
+- name: Mount home nfs share
+  mount:
+    path: /home/monofuel
+    src: 192.168.11.132:/megared/share/monofuel
+    fstype: nfs
+    opts: "vers=4"
+    state: present

@@ -8,7 +8,9 @@
   connection: chroot
   roles:
     - common
+    - nfs
     - desktop
+    
 - hosts:
     - /chroots/debian-dev
   connection: chroot
