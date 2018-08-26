@@ -5,6 +5,8 @@ set boot_host http://192.168.11.132/boot
 :retry_dhcp
 dhcp || goto retry_dhcp
 
+set syslog 192.168.11.195
+
 # show my pretty Iceland photo
 # console --picture ${boot_host}/iceland.png
 #
@@ -62,7 +64,7 @@ boot
 echo loading debian-dev
 kernel ${boot_host}/debian-dev/vmlinuz
 module ${boot_host}/debian-dev/initrd.img 
-imgargs vmlinuz boot=live fetch=${boot_host}/debian-dev/filesystem.squashfs
+imgargs vmlinuz boot=live fetch=${boot_host}/debian-dev/filesystem.squashfs console=ttyS0 console=tty0
 boot
 
 :debian-lite

@@ -2,6 +2,9 @@
 - hosts: chroots
   vars_files:
     - ../vars/var_file.yml
+  vars:
+    proxy_env:
+      LC_ALL: C
   connection: chroot
   roles:
     - common

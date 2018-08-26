@@ -3,6 +3,18 @@
   apt:
     update_cache: yes
     cache_valid_time: 3600
+- apt_repository:
+    repo: deb http://deb.debian.org/debian stretch main contrib non-free
+    state: present
+- apt_repository:
+    repo: deb http://security.debian.org/debian-security/ stretch/updates main contrib non-free
+    state: present
+- apt_repository:
+    repo: deb http://deb.debian.org/debian stretch-updates main contrib non-free
+    state: present
+- apt_repository:
+    repo: deb http://httpredir.debian.org/debian stretch-backports main contrib non-free
+    state: present
 - name: install useful tools
   apt: name={{item}} state=present
   with_items:

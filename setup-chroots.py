@@ -39,31 +39,35 @@ def chroot_command(chroot: str, command: str):
   subprocess.run(command, shell=True)
 
 def chroot_prep(chroot: str):
-  chroot_command(chroot, 'mount none -t proc /proc')
-  chroot_command(chroot, 'mount none -t sysfs /sys')
-  chroot_command(chroot, 'mount none -t devpts /dev/pts')
-  chroot_command(chroot, 'apt install python -y')
+  subprocess.run('mount -t proc proc {}/proc'.format(chroot), shell=True)
+  subprocess.run('mount -t sysfs sys {}/sys'.format(chroot), shell=True)
+  subprocess.run('mount -o bind /dev {}/dev'.format(chroot), shell=True)
+  chroot_command(chroot, 'apt update')
+  chroot_command(chroot, 'apt upgrade -y')
+  chroot_command(chroot, 'apt install python python3 -y')
   print("chroot {} prepped".format(chroot))
 
 def chroot_cleanup(chroot: str):
   #chroot_command(chroot, '')
   chroot_command(chroot, 'apt clean')
   chroot_command(chroot, 'rm -rf /tmp/*')
-  chroot_command(chroot, 'umount /proc')
-  chroot_command(chroot, 'umount /sys')
-  chroot_command(chroot, 'umount /dev/pts')
+  subprocess.run('umount -f  {}/proc'.format(chroot), shell=True)
+  subprocess.run('umount -f  {}/sys'.format(chroot), shell=True)
+  subprocess.run('umount -f  {}/dev'.format(chroot), shell=True)
   print("chroot {} cleaned up".format(chroot))
 
 def setup_pxe(chroot: str):
   # copy vmlinuz and initrd
-  boot_path = path.join(chroot, '/boot')
+  boot_path = path.join(chroot, 'boot')
   boot_files =  [f for f in listdir(boot_path) if path.isfile(path.join(boot_path, f))]
   # figure out what the newest files are
   vmlinuz_files = [f for f in boot_files if re.match(r'^vmlinuz.*', path.basename(f))]
   initrd_files = [f for f in boot_files if re.match(r'^initrd.*', path.basename(f))]
   # TODO assert lists are not empty
-  vmlinuz_file = path.join(boot_path, sorted(vmlinuz_files)[0])
-  initrd_file = path.join(boot_path, sorted(initrd_files)[0])
+  vmlinuz_file = path.join(boot_path, sorted(vmlinuz_files)[-1])
+  initrd_file = path.join(boot_path, sorted(initrd_files)[-1])
+
+  debug('vmlinuz: {} initrd: {}'.format(vmlinuz_file, initrd_file))
 
   dst_folder = path.join('/mnt/vagrant/web/', path.basename(chroot));
   if not (os.path.isdir(dst_folder)):
@@ -73,6 +77,7 @@ def setup_pxe(chroot: str):
   copyfile(initrd_file, path.join(dst_folder, 'initrd.img'))
 
   # package the squashfs
+  print('squashing {}'.format(chroot))
   subprocess.run('mksquashfs {} {} -noappend -e boot'.format(chroot, path.join(dst_folder, 'filesystem.squashfs')), shell=True)
 
 
