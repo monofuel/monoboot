@@ -1,0 +1,23 @@
+---
+- name: Add microsoft apt key
+  apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+- name: install http transport
+  apt: name={{item}} state=present
+  with_items:
+    - apt-transport-https
+- apt_repository:
+    repo: deb https://packages.microsoft.com/repos/vscode stable main
+    state: present
+- name: update cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+- name: install productivity tools
+  apt: name={{item}} state=present
+  with_items:
+    - blender
+    - gimp
+    - krita
+    - code

@@ -1,6 +1,6 @@
 #!ipxe
 
-set boot_host http://mjolnir.mono/boot
+set boot_host http://192.168.11.132/boot
 
 :retry_dhcp
 dhcp || goto retry_dhcp
@@ -17,7 +17,9 @@ cpair --foreground 2 --background 4 3
 :start
 menu Monofuel Network Boot
 item --gap -- Live
-item --key d debian Debian Stretch
+item debian Debian Stretch
+item --key d debian-dev Debian Dev
+item debian-lite Debian Lite
 item --gap -- Installer
 # TODO
 item --gap -- Tool
@@ -47,7 +49,25 @@ reboot
 :exit
 exit
 
+# TODO dynamically generate this file from hosts and roles
+
 :debian
 echo loading debian
-kernel ${boot_host}/web/debian/vmlinuz
-module ${boot_host}/web/debian/initrd.img
+kernel ${boot_host}/debian/vmlinuz
+module ${boot_host}/debian/initrd.img 
+imgargs vmlinuz boot=live fetch=${boot_host}/debian/filesystem.squashfs
+boot
+
+:debian-dev
+echo loading debian-dev
+kernel ${boot_host}/debian-dev/vmlinuz
+module ${boot_host}/debian-dev/initrd.img 
+imgargs vmlinuz boot=live fetch=${boot_host}/debian-dev/filesystem.squashfs
+boot
+
+:debian-lite
+echo loading debian-lite
+kernel ${boot_host}/debian-lite/vmlinuz
+module ${boot_host}/debian-lite/initrd.img 
+imgargs vmlinuz boot=live fetch=${boot_host}/debian-lite/filesystem.squashfs
+boot

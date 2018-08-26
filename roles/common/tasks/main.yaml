@@ -1,0 +1,34 @@
+---
+- name: update cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+- name: install useful tools
+  apt: name={{item}} state=present
+  with_items:
+    - vim
+    - tmux
+    - curl
+    - wget
+    - git
+    - fish
+    - make
+    - sudo
+    - linux-headers-amd64
+    - linux-image-amd64
+    - live-boot
+- name: create group monofuel
+  group:
+    name: monofuel
+    gid: 1000
+    state: present
+- name: Add the user monofuel
+  user:
+    name: monofuel
+    shell: /bin/fish
+    comment: The Techromancer
+    uid: 1000
+    groups: sudo, monofuel
+    password: "{{ password }}"
+    append: yes
+# TODO nvidia drivers

@@ -1,3 +1,6 @@
 mono.kpxe
-web/debian
+web/debian*
 .vagrant
+log
+__pycache__
+vars/var_file.yml

@@ -1,0 +1,14 @@
+---
+- hosts: chroots
+  vars_files:
+    - ../vars/var_file.yml
+  connection: chroot
+  roles:
+    - common
+    - desktop
+- hosts:
+    - /chroots/debian-dev
+  connection: chroot
+  roles: 
+    - dev
+    - virt

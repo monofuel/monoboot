@@ -1,0 +1,3 @@
+[chroots]
+/chroots/debian-dev
+/chroots/debian-lite
