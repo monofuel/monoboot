@@ -10,3 +10,7 @@ check:
 .PHONY: check
 chroots:
 	python3 setup-chroots.py
+
+.PHONY: update-local
+update-local:
+	ansible-playbook --become ./playbooks/dev-local.yml

@@ -26,6 +26,9 @@
     - fish
     - make
     - sudo
+    - firefox-esr
+    - virtualbox-guest-dkms
+    - virtualbox-guest-x11
     - linux-headers-amd64
     - linux-image-amd64
     - live-boot
@@ -37,7 +40,7 @@
 - name: Add the user monofuel
   user:
     name: monofuel
-    shell: /bin/fish
+    shell: /usr/bin/fish
     comment: The Techromancer
     uid: 1000
     groups: sudo, monofuel

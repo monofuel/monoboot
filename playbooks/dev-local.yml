@@ -1,0 +1,11 @@
+---
+- hosts:
+    - localhost
+  vars_files:
+    - ../vars/var_file.yml
+  roles: 
+    - common
+    - nfs
+    - desktop
+    - dev
+    - virt

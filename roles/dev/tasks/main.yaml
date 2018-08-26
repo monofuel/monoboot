@@ -3,12 +3,20 @@
   apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
     state: present
+- name: Add ansible key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 93C4A3FD7BB9C367
 - name: install http transport
   apt: name={{item}} state=present
   with_items:
     - apt-transport-https
+    - dirmngr
 - apt_repository:
     repo: deb https://packages.microsoft.com/repos/vscode stable main
+    state: present
+- apt_repository:
+    repo: deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
     state: present
 - name: update cache
   apt:
@@ -21,3 +29,28 @@
     - gimp
     - krita
     - code
+    - ansible
+    - python-pip
+- name: fetch docker installer
+  get_url:
+    url: https://get.docker.com
+    dest: /tmp/get-docker.sh
+    mode: 1770
+- name: install docker
+  tags:
+  - setup
+  shell: "/tmp/get-docker.sh"
+  register: get_docker
+- name: start docker
+  service:
+    name: docker
+    enabled: yes
+    state: started
+- name: install docker-compose
+  pip:
+    name: docker-compose
+- name: add monofuel to docker group
+  user:
+    name: monofuel
+    group: docker
+    append: yes
