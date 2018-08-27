@@ -91,9 +91,9 @@ def main():
     chroot_prep(chroot)
 
   subprocess.run('ansible-playbook ./playbooks/pxe.yml', shell=True)
-  for chroot in chroots:
-    chroot_cleanup(chroot)
-    setup_pxe(chroot)
+  #for chroot in chroots:
+  #  chroot_cleanup(chroot)
+  #  setup_pxe(chroot)
 
 if __name__ == "__main__":
   main()

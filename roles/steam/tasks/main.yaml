@@ -1,0 +1,17 @@
+---
+- name: Check if i386 is enabled
+  shell: dpkg --print-foreign-architectures | grep i386
+  register: result_i386_check
+  changed_when: result_i386_check.rc == 1
+  failed_when: result_i386_check.rc > 1
+- name: Enable i386 architecture
+  command: dpkg --add-architecture i386
+  when: result_i386_check.rc == 1
+- name: update cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+- name: install steam
+  apt: name={{item}} state=present
+  with_items:
+    - steam
