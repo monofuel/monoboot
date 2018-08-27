@@ -11,6 +11,11 @@
   apt:
     update_cache: yes
     cache_valid_time: 3600
+- debconf:
+    name: steam
+    question: steam/question
+    value: I AGREE
+    vtype: select
 - name: install steam
   apt: name={{item}} state=present
   with_items:

@@ -90,10 +90,10 @@ def main():
     bootstrap(chroot)
     chroot_prep(chroot)
 
-  subprocess.run('ansible-playbook ./playbooks/pxe.yml', shell=True)
-  #for chroot in chroots:
-  #  chroot_cleanup(chroot)
-  #  setup_pxe(chroot)
+  subprocess.run('ansible-playbook ./playbooks/pxe.yml', shell=True, check=True)
+  for chroot in chroots:
+    chroot_cleanup(chroot)
+    setup_pxe(chroot)
 
 if __name__ == "__main__":
   main()
