@@ -48,9 +48,8 @@ def chroot_prep(chroot: str):
   print("chroot {} prepped".format(chroot))
 
 def chroot_cleanup(chroot: str):
-  #chroot_command(chroot, '')
-  chroot_command(chroot, 'apt clean')
-  chroot_command(chroot, 'rm -rf /tmp/*')
+  # chroot_command(chroot, 'apt clean')
+  # chroot_command(chroot, 'rm -rf /tmp/*')
   subprocess.run('umount -f  {}/proc'.format(chroot), shell=True)
   subprocess.run('umount -f  {}/sys'.format(chroot), shell=True)
   subprocess.run('umount -f  {}/dev'.format(chroot), shell=True)

@@ -13,7 +13,7 @@
     repo: deb http://deb.debian.org/debian stretch-updates main contrib non-free
     state: present
 - apt_repository:
-    repo: deb http://httpredir.debian.org/debian stretch-backports main contrib non-free
+    repo: deb http://deb.debian.org/debian stretch-backports main contrib non-free
     state: present
 - name: install useful tools
   apt: name={{item}} state=present
@@ -23,11 +23,15 @@
     - curl
     - wget
     - git
+    - htop
     - fish
     - make
     - sudo
+    - mesa-utils
+    - keepass2
+    - chromium
     - firefox-esr
-    - virtualbox-guest-dkms
+    - virtualbox-guest-dkms # requires stretch-backports
     - virtualbox-guest-x11
     - linux-headers-amd64
     - linux-image-amd64
@@ -46,4 +50,3 @@
     groups: sudo, monofuel
     password: "{{ password }}"
     append: yes
-# TODO nvidia drivers
